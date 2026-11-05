@@ -75,6 +75,9 @@ pipeline {
                 stage('Windows') {
                     when { expression { params.Windows_Build } }
                     agent { label 'Win' }
+                    environment {
+                        QT_LIB_PATH = 'C:\\Qt\\6.8.3\\msvc2022_64'
+                    }
                     steps {
                         /* Start from a clean tree, the Windows nodes are not containerised. */
                         bat 'git clean -q -d -f -x'
@@ -82,6 +85,7 @@ pipeline {
                         /* Visual Studio is a multi-config generator, so one configure step covers both build types. */
                         bat """
                             cmake -S . -B build_windows -A x64 ^
+                                  -DCMAKE_PREFIX_PATH="%QT_LIB_PATH%" ^
                                   ${env.CMAKE_COMMON_OPTIONS}
                         """
 
