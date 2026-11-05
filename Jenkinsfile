@@ -49,6 +49,8 @@ pipeline {
                                 /* Configure, build and install into a staging directory so the shared objects
                                  * (including the versioned symlink targets) end up in one predictable place. */
                                 sh """
+                                    # start the SDK environment before running cmake.. These need to be done in the same shell session so the environment variables stay in scope
+                                    . /opt/PIP_OS/environment-setup-core2-64-poky-linux
                                     rm -rf build_linux_${buildType} dist_linux/${buildType}
                                     cmake -S . -B build_linux_${buildType} \
                                           -DCMAKE_BUILD_TYPE=${buildType} \
